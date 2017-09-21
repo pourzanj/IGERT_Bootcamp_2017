@@ -60,3 +60,10 @@ bibirevo %>%
   ggplot() +
   geom_point(aes(full_sq, log_price)) +
   geom_point(aes(full_sq, log_price_sample), color = "red")
+
+#try hierarchical model
+sampled_sub_areas <- houses %>% group_by(sub_area) %>% summarize(n = n()) %>% sample_n(9)
+houses2 <- houses %>% inner_join(sampled_sub_areas) %>% sample_n(1000) %>% select(-n)
+houses2 %>% group_by(sub_area) %>% summarize(n = n())
+
+houses2 %>% ggplot(aes(full_sq, log_price)) + geom_point() + facet_wrap(~ sub_area)
